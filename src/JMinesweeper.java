@@ -23,6 +23,7 @@ public class JMinesweeper {
 	//board rendering
 	static String representsBomb = "B";
 	static String representsBlank = " ";
+	static String representsBorder = "#";
 	
 	public static void main(String[] args) {
 		
@@ -30,6 +31,8 @@ public class JMinesweeper {
 		System.out.println("generating board");
 		generateBoard();
 		System.out.println("board created");
+		
+		typeBoard();
 		
 		while(gameRunning) {
 			
@@ -63,15 +66,33 @@ public class JMinesweeper {
 	
 	public static void typeBoard() {
 		
+		for(int i = 0; i < boardSizeX+2; i++) {
+		    for(int j = 0; j < boardSizeY+2; j++) {
+		        
+		        if(board[i][j] == -99) {
+		            System.out.print(representsBorder);
+		        } else if(board[i][j] == 0) {
+		            System.out.print(representsBlank);
+		        } else if(board[i][j] == -2) {
+		            System.out.print(representsBomb);
+		        } else {
+		            System.out.print(board[i][j]);
+		        }
+		        System.out.print(" ");
+		        
+		    }
+		    System.out.println();
+		}
+		
 	}
 	
 	public static void generateBoard() {
 		
 		//generate borders
-		for(int i = 0; i < boardSizeX+2; i++) {
-			board[i][0] = -99;
-			board[i][boardSizeX+1] = -99;
-		}
+// 		for(int i = 0; i < boardSizeX+2; i++) {
+// 			board[i][0] = -99;
+// 			board[i][boardSizeX+1] = -99;
+// 		}
 		
 		//set bombs
 		for(int i = 0; i < numberOfBombs; i++) {
@@ -96,6 +117,9 @@ public class JMinesweeper {
 	
 	public static int bombsAdjacent(int x , int y) {
 		int output = 0;
+		
+		x++;
+		y++;
 		
 		if(board[x+1][y+1] == -2) {
 			output++;
