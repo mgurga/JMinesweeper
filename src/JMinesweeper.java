@@ -9,10 +9,11 @@ public class JMinesweeper {
 	
 	static Random rand = new Random();
 	
-	static int boardSizeX = 10;
-	static int boardSizeY = 10;
-	static int numberOfBombs = 5;
+	static int boardSizeX = 20;
+	static int boardSizeY = 20;
+	static int numberOfBombs = 10;
 	static int[][] board = new int[boardSizeX+2][boardSizeY+2];
+	static boolean[][] viewableBoard = new boolean[boardSizeX+2][boardSizeY+2];
 	
 	//what some numbers mean
 		//-99 is a border
@@ -21,9 +22,11 @@ public class JMinesweeper {
 	
 	
 	//board rendering
+	static boolean rawData = true;
+	
 	static String representsBomb = "B";
 	static String representsBlank = " ";
-	static String representsBorder = "#";
+	static String representsUntouchedTile = "#";
 	
 	public static void main(String[] args) {
 		
@@ -32,7 +35,7 @@ public class JMinesweeper {
 		generateBoard();
 		System.out.println("board created");
 		
-		typeBoard();
+		typeBoard(true);
 		
 		while(gameRunning) {
 			
@@ -64,26 +67,39 @@ public class JMinesweeper {
 		
 	}
 	
-	public static void typeBoard() {
+	public static void typeBoard(boolean cheat) {
 		
-		for(int i = 0; i < boardSizeX+2; i++) {
-		    for(int j = 0; j < boardSizeY+2; j++) {
-		        
-		        if(board[i][j] == -99) {
-		            System.out.print(representsBorder);
-		        } else if(board[i][j] == 0) {
-		            System.out.print(representsBlank);
-		        } else if(board[i][j] == -2) {
-		            System.out.print(representsBomb);
-		        } else {
-		            System.out.print(board[i][j]);
-		        }
-		        System.out.print(" ");
-		        
-		    }
-		    System.out.println();
+		if(cheat) {
+			//cheat
+			for(int i = 0; i < boardSizeX+2; i++) {
+			    for(int j = 0; j < boardSizeY+2; j++) {
+			        if(rawData) {
+				        if(board[i][j] == 0) {
+				            System.out.print(representsBlank);
+				        } else if(board[i][j] == 9) {
+				            System.out.print(representsBomb);
+				        } else {
+				            System.out.print(board[i][j]);
+				        }
+			        } else {
+			        	System.out.print(board[i][j]);
+			        }
+			        
+			        System.out.print(" ");
+			        
+			    }
+			    System.out.println();
+			}
+		} else {
+			//non cheat
+			for(int i = 0; i < boardSizeX+2; i++) {
+			    for(int j = 0; j < boardSizeY+2; j++) {
+			    	
+			    	
+			    	
+			    }
+			}
 		}
-		
 	}
 	
 	public static void generateBoard() {
@@ -96,53 +112,57 @@ public class JMinesweeper {
 		
 		//set bombs
 		for(int i = 0; i < numberOfBombs; i++) {
-			int randx = rand.nextInt(boardSizeX);
-			int randy = rand.nextInt(boardSizeY);
+			int randx = rand.nextInt(boardSizeX-1)+1;
+			int randy = rand.nextInt(boardSizeY-1)+1;
 			
-			if(board[randx][randy] == -2) {
+			if(board[randx][randy] == 9) {
 				i--;
 			} else {
-				board[randx][randy] = -2;
+				board[randx][randy] = 9;
+				System.out.println("new bomb at X:" + randx + " Y: " + randy);
 			}
 			
 		}
 		
 		//set numbers
-		for(int i = 0; i < boardSizeX; i++) {
-			for(int j = 0; j < boardSizeY; j++) {
-				board[i][j] = bombsAdjacent(i,j);
+		for(int i = 0; i < boardSizeX-1; i++) {
+			for(int j = 0; j < boardSizeY-1; j++) {
+				if(board[i+1][j+1] == 9) {} else {
+				board[i+1][j+1] = bombsAdjacent(i,j);
+				}
 			}
 		}
 	}
 	
 	public static int bombsAdjacent(int x , int y) {
 		int output = 0;
+		int bombID = 9;
 		
 		x++;
 		y++;
 		
-		if(board[x+1][y+1] == -2) {
+		if(board[x+1][y+1] == bombID) {
 			output++;
 		}
-		if(board[x+1][y] == -2) {
+		if(board[x+1][y] == bombID) {
 			output++;
 		}
-		if(board[x+1][y-1] == -2) {
+		if(board[x+1][y-1] == bombID) {
 			output++;
 		}
-		if(board[x][y+1] == -2) {
+		if(board[x][y+1] == bombID) {
 			output++;
 		}
-		if(board[x][y-1] == -2) {
+		if(board[x][y-1] == bombID) {
 			output++;
 		}
-		if(board[x-1][y+1] == -2) {
+		if(board[x-1][y+1] == bombID) {
 			output++;
 		}
-		if(board[x-1][y] == -2) {
+		if(board[x-1][y] == bombID) {
 			output++;
 		}
-		if(board[x-1][y-1] == -2) {
+		if(board[x-1][y-1] == bombID) {
 			output++;
 		}
 		
