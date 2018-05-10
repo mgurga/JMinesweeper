@@ -66,6 +66,7 @@ public class JMinesweeper {
 			typeBoard(true);
 		} else {
 			System.out.println(board[y][x]);
+			viewableBoard[y][x] = true;
 		}
 
 	}
