@@ -49,9 +49,9 @@ public class JMinesweeper {
 			selectedY = Integer.parseInt(positionFilter[1]);
 
 			if (spaceFilter[0].equals("S")) {
-				step(selectedX + 1, selectedY + 1);
+				step(selectedX, selectedY);
 			} else {
-				flag(selectedX + 1, selectedY + 1);
+				flag(selectedX, selectedY);
 			}
 
 		}
@@ -59,7 +59,7 @@ public class JMinesweeper {
 	}
 
 	public static void step(int x, int y) {
-		if (board[y][x] == 9) {
+		if (board[x][y] == 9) {
 			gameRunning = false;
 			System.out.println("GAME OVER YOU STEPPED ON A BOMB");
 			System.out.println("GAME BOARD BELOW");
@@ -67,9 +67,16 @@ public class JMinesweeper {
 		} else {
 			System.out.println(board[y][x]);
 			viewableBoard[y][x] = true;
+			boardSnippet(x,y);
 		}
 
 	}
+
+    public static void boardSnippet(int x, int y) {
+        System.out.println(board[x+1][y+1] + " " + board[x][y+1] + " " + board[x-1][y+1]);
+        System.out.println(board[x+1][y] + " " + board[x][y] + " " + board[x-1][y]);
+        System.out.println(board[x+1][y-1] + " " + board[x][y-1] + " " + board[x-1][y-1]);
+    }
 
 	public static void flag(int x, int y) {
 
