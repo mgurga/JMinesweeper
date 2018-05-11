@@ -66,31 +66,69 @@ public class JMinesweeper {
 			typeBoard(true);
 		} else {
 			System.out.println(board[y][x]);
-			viewableBoard[y][x] = true;
-			boardSnippet(x,y);
+			stepClear(x, y);
+			// boardSnippet(x, y);
+			typeBoard(false);
+
 		}
 
 	}
 
-    public static void boardSnippet(int x, int y) {
-        System.out.println(board[x+1][y+1] + " " + board[x][y+1] + " " + board[x-1][y+1]);
-        System.out.println(board[x+1][y] + " " + board[x][y] + " " + board[x-1][y]);
-        System.out.println(board[x+1][y-1] + " " + board[x][y-1] + " " + board[x-1][y-1]);
-    }
+	public static void stepClear(int x, int y) {
+		viewableBoard[y][x] = true;
+
+		if ((int) x > 0 && x < boardSizeX && y > 0 && y < boardSizeY) {
+			// top
+			if (board[x + 1][y + 1] == 0) {
+				stepClear(x + 1, y + 1);
+			}
+			if (board[x][y + 1] == 0) {
+				stepClear(x, y + 1);
+			}
+			if (board[x - 1][y + 1] == 0) {
+				stepClear(x - 1, y + 1);
+			}
+
+			// middle
+			if (board[x + 1][y] == 0) {
+				stepClear(x + 1, y);
+			}
+			if (board[x - 1][y] == 0) {
+				stepClear(x - 1, y);
+			}
+
+			// bottom
+			if (board[x + 1][y - 1] == 0) {
+				stepClear(x + 1, y - 1);
+			}
+			if (board[x][y] == 0) {
+				stepClear(x, y - 1);
+			}
+			if (board[x - 1][y] == 0) {
+				stepClear(x - 1, y - 1);
+			}
+		}
+	}
+
+	public static void boardSnippet(int x, int y) {
+		System.out.println(board[x + 1][y + 1] + " " + board[x][y + 1] + " " + board[x - 1][y + 1]);
+		System.out.println(board[x + 1][y] + " " + board[x][y] + " " + board[x - 1][y]);
+		System.out.println(board[x + 1][y - 1] + " " + board[x][y - 1] + " " + board[x - 1][y - 1]);
+	}
 
 	public static void flag(int x, int y) {
 
 	}
 
 	public static void typeBoard(boolean cheat) {
-
+		System.out.println();
 		if (cheat) {
 			// cheat
 			String top = "|";
 			for (int i = 0; i < boardSizeX + 2; i++) {
 				top += "- ";
 			}
-			System.out.print(top);
+			System.out.println(top);
 			for (int i = 0; i < boardSizeX + 2; i++) {
 				System.out.print("|");
 				for (int j = 0; j < boardSizeY + 2; j++) {
@@ -120,7 +158,7 @@ public class JMinesweeper {
 			for (int i = 0; i < boardSizeX + 2; i++) {
 				top += "- ";
 			}
-			System.out.print(top);
+			System.out.println(top + "|");
 			for (int i = 0; i < boardSizeX + 2; i++) {
 				System.out.print("|");
 				for (int j = 0; j < boardSizeY + 2; j++) {
