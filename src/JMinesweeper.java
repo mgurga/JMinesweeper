@@ -77,37 +77,36 @@ public class JMinesweeper {
 	public static void stepClear(int x, int y) {
 		viewableBoard[y][x] = true;
 
-		if ((int) x > 0 && x < boardSizeX && y > 0 && y < boardSizeY) {
 			// top
-			if (board[x + 1][y + 1] == 0) {
+			if (board[x + 1][y + 1] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x + 1, y + 1);
 			}
-			if (board[x][y + 1] == 0) {
+			if (board[x][y + 1] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x, y + 1);
 			}
-			if (board[x - 1][y + 1] == 0) {
+			if (board[x - 1][y + 1] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x - 1, y + 1);
 			}
 
 			// middle
-			if (board[x + 1][y] == 0) {
+			if (board[x + 1][y] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x + 1, y);
 			}
-			if (board[x - 1][y] == 0) {
+			if (board[x - 1][y] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x - 1, y);
 			}
 
 			// bottom
-			if (board[x + 1][y - 1] == 0) {
+			if (board[x + 1][y - 1] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x + 1, y - 1);
 			}
-			if (board[x][y] == 0) {
+			if (board[x][y] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x, y - 1);
 			}
-			if (board[x - 1][y] == 0) {
+			if (board[x - 1][y] == 0 && viewableBoard[y][x] == false) {
 				stepClear(x - 1, y - 1);
 			}
-		}
+		
 	}
 
 	public static void boardSnippet(int x, int y) {
