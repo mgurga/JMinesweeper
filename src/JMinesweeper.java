@@ -74,39 +74,58 @@ public class JMinesweeper {
 
 	}
 
+	public static boolean validTile(int x, int y) {
+		boolean output = true;
+
+		if (x < 1) {
+			output = false;
+		}
+		if (y < 1) {
+			output = false;
+		}
+		if (x > boardSizeX - 1) {
+			output = false;
+		}
+		if (y > boardSizeY - 1) {
+			output = false;
+		}
+
+		return output;
+	}
+
 	public static void stepClear(int x, int y) {
-		viewableBoard[y][x] = true;
+		viewableBoard[x][y] = true;
 
-			// top
-			if (board[x + 1][y + 1] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x + 1, y + 1);
-			}
-			if (board[x][y + 1] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x, y + 1);
-			}
-			if (board[x - 1][y + 1] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x - 1, y + 1);
-			}
+		// top
+		if (board[x + 1][y + 1] == 0 && viewableBoard[x + 1][y + 1] == false && validTile(x + 1, y + 1)) {
+			stepClear(x + 1, y + 1);
+		}
+		if (board[x][y + 1] == 0 && viewableBoard[x][y + 1] == false && validTile(x, y + 1)) {
+			stepClear(x, y + 1);
+		}
+		if (board[x - 1][y + 1] == 0 && viewableBoard[x - 1][y + 1] == false && validTile(x - 1, y + 1)) {
+			stepClear(x - 1, y + 1);
+		}
 
-			// middle
-			if (board[x + 1][y] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x + 1, y);
-			}
-			if (board[x - 1][y] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x - 1, y);
-			}
+		// middle
+		if (board[x + 1][y] == 0 && viewableBoard[x + 1][y] == false && validTile(x + 1, y)) {
+			stepClear(x + 1, y);
+		}
+		if (board[x - 1][y] == 0 && viewableBoard[x - 1][y] == false && validTile(x - 1, y)) {
+			stepClear(x - 1, y);
+		}
 
-			// bottom
-			if (board[x + 1][y - 1] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x + 1, y - 1);
-			}
-			if (board[x][y] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x, y - 1);
-			}
-			if (board[x - 1][y] == 0 && viewableBoard[y][x] == false) {
-				stepClear(x - 1, y - 1);
-			}
-		
+		// bottom
+		if (board[x + 1][y - 1] == 0 && viewableBoard[x + 1][y - 1] == false && validTile(x + 1, y - 1)) {
+			stepClear(x + 1, y - 1);
+		}
+		if (board[x][y - 1] == 0 && viewableBoard[x][y - 1] == false && validTile(x, y - 1)) {
+			stepClear(x, y - 1);
+		}
+		if (board[x - 1][y - 1] == 0 && viewableBoard[x - 1][y - 1] == false && validTile(x - 1, y - 1)) {
+			stepClear(x - 1, y - 1);
+		}
+
 	}
 
 	public static void boardSnippet(int x, int y) {
@@ -124,23 +143,23 @@ public class JMinesweeper {
 		if (cheat) {
 			// cheat
 			String top = "|";
-			for (int i = 0; i < boardSizeX + 2; i++) {
+			for (int i = 1; i < boardSizeX; i++) {
 				top += "- ";
 			}
 			System.out.println(top);
-			for (int i = 0; i < boardSizeX + 2; i++) {
+			for (int i = 1; i < boardSizeY; i++) {
 				System.out.print("|");
-				for (int j = 0; j < boardSizeY + 2; j++) {
+				for (int j = 1; j < boardSizeX; j++) {
 					if (rawData) {
-						if (board[i][j] == 0) {
+						if (board[j][i] == 0) {
 							System.out.print(representsBlank);
-						} else if (board[i][j] == 9) {
+						} else if (board[j][i] == 9) {
 							System.out.print(representsBomb);
 						} else {
-							System.out.print(board[i][j]);
+							System.out.print(board[j][i]);
 						}
 					} else {
-						System.out.print(board[i][j]);
+						System.out.print(board[j][i]);
 					}
 
 					System.out.print(" ");
@@ -154,21 +173,21 @@ public class JMinesweeper {
 		} else {
 			// non cheat
 			String top = "|";
-			for (int i = 0; i < boardSizeX + 2; i++) {
+			for (int i = 1; i < boardSizeX; i++) {
 				top += "- ";
 			}
 			System.out.println(top + "|");
-			for (int i = 0; i < boardSizeX + 2; i++) {
+			for (int i = 1; i < boardSizeY; i++) {
 				System.out.print("|");
-				for (int j = 0; j < boardSizeY + 2; j++) {
+				for (int j = 1; j < boardSizeX; j++) {
 					if (rawData) {
-						if (viewableBoard[i][j] == true) {
-							if (board[i][j] == 0) {
+						if (viewableBoard[j][i] == true) {
+							if (board[j][i] == 0) {
 								System.out.print(representsBlank);
-							} else if (board[i][j] == 9) {
+							} else if (board[j][i] == 9) {
 								System.out.print(representsBomb);
 							} else {
-								System.out.print(board[i][j]);
+								System.out.print(board[j][i]);
 							}
 						} else {
 							System.out.print(representsUntouchedTile);
