@@ -3,17 +3,20 @@ import java.util.Scanner;
 
 public class JMinesweeper {
 
-	static boolean gameRunning = true;
-
 	static Scanner scan = new Scanner(System.in);
 
 	static Random rand = new Random();
 
 	static int boardSizeX = 10;
 	static int boardSizeY = 10;
-	static int numberOfBombs = 2;
+	static int numberOfBombs = 10;
 	static int[][] board = new int[boardSizeX + 2][boardSizeY + 2];
+
+	static boolean gameRunning = true;
 	static boolean[][] viewableBoard = new boolean[boardSizeX + 2][boardSizeY + 2];
+
+	static String incorrectFormat = "INCORRECT FORMAT";
+	static String outsideBoundaries = "SELECTION OUTSIDE OF BOARD BOUNDARIES";
 
 	// what some numbers mean
 	// -99 is a border
@@ -45,13 +48,25 @@ public class JMinesweeper {
 			String[] spaceFilter = input.split(" ");
 			String[] positionFilter = spaceFilter[1].split(",");
 
-			selectedX = Integer.parseInt(positionFilter[0]);
-			selectedY = Integer.parseInt(positionFilter[1]);
-
-			if (spaceFilter[0].equals("S")) {
-				step(selectedX, selectedY);
+			if (positionFilter.length < 2 || positionFilter[0] == null || positionFilter[1] == null) {
+				System.out.println(incorrectFormat);
 			} else {
-				flag(selectedX, selectedY);
+
+				selectedX = Integer.parseInt(positionFilter[0]);
+				selectedY = Integer.parseInt(positionFilter[1]);
+
+				if (selectedX > boardSizeX || selectedY > boardSizeY) {
+
+					System.out.println(outsideBoundaries);
+
+				} else {
+
+					if (spaceFilter[0].equals("S")) {
+						step(selectedX, selectedY);
+					} else {
+						flag(selectedX, selectedY);
+					}
+				}
 			}
 
 		}
@@ -135,18 +150,20 @@ public class JMinesweeper {
 	}
 
 	public static void flag(int x, int y) {
+		// TODO finish flag, and check if flag
 
 	}
 
 	public static void typeBoard(boolean cheat) {
 		System.out.println();
+		String corner = "O";
 		if (cheat) {
 			// cheat
-			String top = "|";
+			String top = corner;
 			for (int i = 1; i < boardSizeX; i++) {
 				top += "- ";
 			}
-			System.out.println(top);
+			System.out.println(top + corner);
 			for (int i = 1; i < boardSizeY; i++) {
 				System.out.print("|");
 				for (int j = 1; j < boardSizeX; j++) {
@@ -168,15 +185,15 @@ public class JMinesweeper {
 				System.out.print("|");
 				System.out.println();
 			}
-			System.out.print(top + "|");
+			System.out.print(top + corner);
 			System.out.println();
 		} else {
 			// non cheat
-			String top = "|";
+			String top = corner;
 			for (int i = 1; i < boardSizeX; i++) {
 				top += "- ";
 			}
-			System.out.println(top + "|");
+			System.out.println(top + corner);
 			for (int i = 1; i < boardSizeY; i++) {
 				System.out.print("|");
 				for (int j = 1; j < boardSizeX; j++) {
@@ -202,7 +219,7 @@ public class JMinesweeper {
 				System.out.print("|");
 				System.out.println();
 			}
-			System.out.print(top + "|");
+			System.out.print(top + corner);
 			System.out.println();
 		}
 	}
