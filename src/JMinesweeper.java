@@ -19,8 +19,9 @@ public class JMinesweeper {
 	static String outsideBoundaries = "SELECTION OUTSIDE OF BOARD BOUNDARIES";
 
 	// what some numbers mean
-	// -99 is a border
-	// -2 is a bomb
+	// 10 is flag
+	// 9 is a bomb
+	// 0 is blank
 	// every other number is bombs adjacent
 
 	// board rendering
@@ -28,6 +29,7 @@ public class JMinesweeper {
 
 	static String representsBomb = "B";
 	static String representsBlank = " ";
+	static String representsFlag = "F";
 	static String representsUntouchedTile = "#";
 
 	public static void main(String[] args) {
@@ -151,7 +153,15 @@ public class JMinesweeper {
 
 	public static void flag(int x, int y) {
 		// TODO finish flag, and check if flag
+		board[x][y] = 10;
 
+		// test is all bombs are flagged
+		for (int i = 0; i < boardSizeX; i++) {
+
+			for (int j = 0; j < boardSizeY; j++) {
+
+			}
+		}
 	}
 
 	public static void typeBoard(boolean cheat) {
