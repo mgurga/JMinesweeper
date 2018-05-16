@@ -7,13 +7,14 @@ public class JMinesweeper {
 
 	static Random rand = new Random();
 
-	static int boardSizeX = 10;
-	static int boardSizeY = 10;
-	static int numberOfBombs = 10;
-	static int[][] board = new int[boardSizeX + 2][boardSizeY + 2];
+	static int boardSizeX = -1;
+	static int boardSizeY = -1;
+	static int numberOfBombs = -1;
+	static int[][] board;
 
 	static boolean gameRunning = true;
-	static boolean[][] viewableBoard = new boolean[boardSizeX + 2][boardSizeY + 2];
+	static boolean[][] viewableBoard;
+	static boolean[][] flaggedBoard;
 
 	static String incorrectFormat = "INCORRECT FORMAT";
 	static String outsideBoundaries = "SELECTION OUTSIDE OF BOARD BOUNDARIES";
@@ -26,6 +27,7 @@ public class JMinesweeper {
 
 	// board rendering
 	static boolean rawData = true;
+	static boolean cheatMode = false;
 
 	static String representsBomb = "B";
 	static String representsBlank = " ";
@@ -33,12 +35,39 @@ public class JMinesweeper {
 	static String representsUntouchedTile = "#";
 
 	public static void main(String[] args) {
+		// ask for width
+		System.out.println("What is the width of the board");
+		boardSizeX = Integer.parseInt(scan.nextLine());
+
+		// ask for height
+		System.out.println("What is the height of the board");
+		boardSizeY = Integer.parseInt(scan.nextLine());
+
+		// ask for bomb
+		System.out.println("How many bombs are on the board");
+		String bombIn = scan.nextLine();
+		if (bombIn.equals("C")) {
+			System.out.println("started in cheat mode");
+			numberOfBombs = 2;
+			cheatMode = true;
+
+			System.out.println("how many bombs");
+			numberOfBombs = Integer.parseInt(scan.nextLine());
+
+		} else {
+			numberOfBombs = Integer.parseInt(bombIn);
+		}
+
+		board = new int[boardSizeX + 2][boardSizeY + 2];
+		viewableBoard = new boolean[boardSizeX + 2][boardSizeY + 2];
+		flaggedBoard = new boolean[boardSizeX + 2][boardSizeY + 2];
 
 		System.out.println("generating board");
 		generateBoard();
 		System.out.println("board created");
-
-		typeBoard(true);
+		if (cheatMode) {
+			typeBoard(true);
+		}
 		typeBoard(false);
 
 		while (gameRunning) {
@@ -153,15 +182,24 @@ public class JMinesweeper {
 
 	public static void flag(int x, int y) {
 		// TODO finish flag, and check if flag
-		board[x][y] = 10;
+		flaggedBoard[x][y] = true;
 
 		// test is all bombs are flagged
+		int bombsFlagged = 0;
 		for (int i = 0; i < boardSizeX; i++) {
-
 			for (int j = 0; j < boardSizeY; j++) {
-
+				if (flaggedBoard[i][j] == true && board[i][j] == 9) {
+					bombsFlagged++;
+				}
 			}
 		}
+
+		if (bombsFlagged == numberOfBombs) {
+			System.out.println("YOU WIN");
+			gameRunning = false;
+		}
+
+		typeBoard(false);
 	}
 
 	public static void typeBoard(boolean cheat) {
@@ -216,8 +254,11 @@ public class JMinesweeper {
 							} else {
 								System.out.print(board[j][i]);
 							}
+						} else if (flaggedBoard[j][i] == true) {
+							System.out.print(representsFlag);
 						} else {
 							System.out.print(representsUntouchedTile);
+
 						}
 					} else {
 						System.out.print(board[i][j]);
@@ -251,12 +292,17 @@ public class JMinesweeper {
 				i--;
 			} else {
 				board[randx][randy] = 9;
-				System.out.println("new bomb at X:" + randx + " Y: " + randy);
+				if (cheatMode) {
+					System.out.println("new bomb at X:" + randx + " Y: " + randy);
+				} else {
+					System.out.println("new bomb");
+				}
 			}
 
 		}
 
 		// set numbers
+		System.out.println("setting numbers");
 		for (int i = 0; i < boardSizeX - 1; i++) {
 			for (int j = 0; j < boardSizeY - 1; j++) {
 				if (board[i + 1][j + 1] == 9) {
