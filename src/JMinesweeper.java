@@ -37,11 +37,11 @@ public class JMinesweeper {
 	public static void main(String[] args) {
 		// ask for width
 		System.out.println("What is the width of the board");
-		boardSizeX = Integer.parseInt(scan.nextLine());
+		boardSizeX = Integer.parseInt(scan.nextLine()) + 1;
 
 		// ask for height
 		System.out.println("What is the height of the board");
-		boardSizeY = Integer.parseInt(scan.nextLine());
+		boardSizeY = Integer.parseInt(scan.nextLine()) + 1;
 
 		// ask for bomb
 		System.out.println("How many bombs are on the board");
@@ -107,7 +107,7 @@ public class JMinesweeper {
 	public static void step(int x, int y) {
 		if (board[x][y] == 9) {
 			gameRunning = false;
-			System.out.println("GAME OVER YOU STEPPED ON A BOMB");
+			printYouLose();
 			System.out.println("GAME BOARD BELOW");
 			typeBoard(true);
 		} else {
@@ -195,11 +195,30 @@ public class JMinesweeper {
 		}
 
 		if (bombsFlagged == numberOfBombs) {
-			System.out.println("YOU WIN");
+			printYouWin();
+			System.out.println("GAME BOARD BELOW");
 			gameRunning = false;
 		}
 
 		typeBoard(false);
+	}
+
+	public static void printYouLose() {
+		System.out.println(" __     ______  _    _   _      ____   _____ ______ \r\n"
+				+ " \\ \\   / / __ \\| |  | | | |    / __ \\ / ____|  ____|\r\n"
+				+ "  \\ \\_/ / |  | | |  | | | |   | |  | | (___ | |__   \r\n"
+				+ "   \\   /| |  | | |  | | | |   | |  | |\\___ \\|  __|  \r\n"
+				+ "    | | | |__| | |__| | | |___| |__| |____) | |____ \r\n"
+				+ "    |_|  \\____/ \\____/  |______\\____/|_____/|______| \n");
+	}
+
+	public static void printYouWin() {
+		System.out.println(" __     ______  _    _  __          _______ _   _ \r\n"
+				+ " \\ \\   / / __ \\| |  | | \\ \\        / /_   _| \\ | |\r\n"
+				+ "  \\ \\_/ / |  | | |  | |  \\ \\  /\\  / /  | | |  \\| |\r\n"
+				+ "   \\   /| |  | | |  | |   \\ \\/  \\/ /   | | | . ` |\r\n"
+				+ "    | | | |__| | |__| |    \\  /\\  /   _| |_| |\\  |\r\n"
+				+ "    |_|  \\____/ \\____/      \\/  \\/   |_____|_| \\_|\n");
 	}
 
 	public static void typeBoard(boolean cheat) {
