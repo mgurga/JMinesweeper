@@ -111,7 +111,6 @@ public class JMinesweeper {
 			System.out.println("GAME BOARD BELOW");
 			typeBoard(true);
 		} else {
-			System.out.println(board[y][x]);
 			stepClear(x, y);
 			// boardSnippet(x, y);
 			typeBoard(false);
